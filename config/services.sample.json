@@ -1,0 +1,39 @@
+{
+  "spark": {
+    "host": "10.0.0.27",
+    "sshUser": "childs",
+    "sshPort": 22,
+    "remoteScriptsRoot": "/opt/ai/scripts",
+    "openWebUiUrl": "http://10.0.0.27:3000",
+    "vllmUrl": "http://10.0.0.27:8000",
+    "logsRoot": "/opt/ai/logs"
+  },
+  "surface": {
+    "localVllmPort": 18000,
+    "localOpenWebUiPort": 13000
+  },
+  "services": {
+    "openWebUi": {
+      "label": "Open WebUI",
+      "healthUrl": "http://10.0.0.27:3000",
+      "tunneledHealthUrl": "http://127.0.0.1:13000",
+      "startCommand": "bash /opt/ai/scripts/start-open-webui.sh",
+      "stopCommand": "bash /opt/ai/scripts/stop-open-webui.sh",
+      "restartCommand": "bash /opt/ai/scripts/restart-open-webui.sh",
+      "statusCommand": "bash /opt/ai/scripts/status-open-webui.sh",
+      "tailCommand": "bash /opt/ai/scripts/tail-open-webui-log.sh",
+      "logPath": "docker:open-webui"
+    },
+    "vllm": {
+      "label": "vLLM",
+      "healthUrl": "http://10.0.0.27:8000/v1/models",
+      "tunneledHealthUrl": "http://127.0.0.1:18000/v1/models",
+      "startCommand": "bash /opt/ai/scripts/start-vllm.sh",
+      "stopCommand": "bash /opt/ai/scripts/stop-vllm.sh",
+      "restartCommand": "bash /opt/ai/scripts/restart-vllm.sh",
+      "statusCommand": "bash /opt/ai/scripts/status-vllm.sh",
+      "tailCommand": "bash /opt/ai/scripts/tail-vllm-log.sh",
+      "logPath": "/opt/ai/logs/vllm.log"
+    }
+  }
+}

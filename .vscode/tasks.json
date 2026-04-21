@@ -1,0 +1,250 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Fleet: Deploy Spark Scripts",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/surface/deploy-to-spark.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Surface Check",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/surface/surface-check.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Start Tunnels",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/surface/start-tunnels.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Stop Tunnels",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/surface/stop-tunnels.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Health Check",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/health-check.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Disk Usage",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/disk-usage.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Remote Disk Usage",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/remote-disk-usage.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Open WebUI Status",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/service-status.ps1",
+        "-Service",
+        "openWebUi"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Start Open WebUI",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/start-service.ps1",
+        "-Service",
+        "openWebUi"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Stop Open WebUI",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/stop-service.ps1",
+        "-Service",
+        "openWebUi"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: vLLM Status",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/service-status.ps1",
+        "-Service",
+        "vllm"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Start vLLM",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/start-service.ps1",
+        "-Service",
+        "vllm"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Stop vLLM",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/stop-service.ps1",
+        "-Service",
+        "vllm"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Restart Open WebUI",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/restart-service.ps1",
+        "-Service",
+        "openWebUi",
+        "-Execute"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Restart vLLM",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/restart-service.ps1",
+        "-Service",
+        "vllm",
+        "-Execute"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Tail Open WebUI Log",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/tail-remote-log.ps1",
+        "-Service",
+        "openWebUi"
+      ],
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Tail vLLM Log",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/tail-remote-log.ps1",
+        "-Service",
+        "vllm"
+      ],
+      "isBackground": true,
+      "problemMatcher": []
+    }
+  ]
+}

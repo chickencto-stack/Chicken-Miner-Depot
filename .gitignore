@@ -1,0 +1,21 @@
+# Logs
+logs/
+*.log
+
+# PowerShell state and transcripts
+*.state.json
+*.cpu.json
+*.transcript.txt
+.runtime/
+
+# Local environment overrides
+.env
+.env.*
+config/services.local.json
+
+# VS Code
+.vscode/*.code-workspace
+
+# OS files
+Thumbs.db
+Desktop.ini
