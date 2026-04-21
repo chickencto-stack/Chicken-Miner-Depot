@@ -16,10 +16,10 @@ if (-not (Test-Path $ConfigPath)) {
 $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
 $runtimeDir = Join-Path $PSScriptRoot "..\.runtime"
 $pidPath = Join-Path $runtimeDir "surface-tunnels.pid"
-$commandPath = Join-Path $runtimeDir "surface-tunnels.cmd"
 $hostName = $config.spark.host
 $userName = $config.spark.sshUser
 $port = [string]$config.spark.sshPort
+$keyPath = $config.spark.sshKeyPath
 $webUiPort = [string]$config.surface.localOpenWebUiPort
 $vllmPort = [string]$config.surface.localVllmPort
 
@@ -38,31 +38,50 @@ if (Test-Path $pidPath) {
 }
 
 $arguments = @(
+  "-f",
   "-N",
-  "-L", "$webUiPort:127.0.0.1:3000",
-  "-L", "$vllmPort:127.0.0.1:8000",
+  "-o", "BatchMode=yes",
+  "-L", "${webUiPort}:127.0.0.1:3000",
+  "-L", "${vllmPort}:127.0.0.1:8000",
   "-p", $port,
   "$userName@$hostName"
 )
 
-$sshCommand = "ssh {0}" -f (($arguments | ForEach-Object {
-  if ($_ -match '\s') {
-    '"{0}"' -f $_
-  }
-  else {
-    $_
-  }
-}) -join ' ')
+if (-not [string]::IsNullOrWhiteSpace($keyPath)) {
+  $expandedKeyPath = [Environment]::ExpandEnvironmentVariables($keyPath)
+  $arguments = @("-i", $expandedKeyPath) + $arguments
+}
 
-Set-Content -Path $commandPath -Value "@echo off`r`n$sshCommand`r`n" -NoNewline
+$existingListeners = Get-NetTCPConnection -State Listen -LocalPort @([int]$webUiPort, [int]$vllmPort) -ErrorAction SilentlyContinue |
+  Select-Object -ExpandProperty OwningProcess -Unique
 
-$process = Start-Process -FilePath "powershell" -ArgumentList @(
-  "-NoExit",
-  "-ExecutionPolicy", "Bypass",
-  "-Command", "& '$commandPath'"
-) -PassThru
-Set-Content -Path $pidPath -Value $process.Id
-Write-Host "Started tunnel window PID $($process.Id)"
+Start-Process -FilePath "ssh" -ArgumentList $arguments -WindowStyle Hidden | Out-Null
+
+$deadline = (Get-Date).AddSeconds(5)
+$listenerProcessIds = @()
+while ((Get-Date) -lt $deadline) {
+  $listenerProcessIds = @(Get-NetTCPConnection -State Listen -LocalPort @([int]$webUiPort, [int]$vllmPort) -ErrorAction SilentlyContinue |
+    Select-Object -ExpandProperty OwningProcess -Unique |
+    Where-Object { $_ -notin $existingListeners })
+
+  if ($listenerProcessIds.Count -eq 1) {
+    break
+  }
+
+  Start-Sleep -Milliseconds 200
+}
+
+if (-not $listenerProcessIds) {
+  $listenerProcessIds = @(Get-NetTCPConnection -State Listen -LocalPort @([int]$webUiPort, [int]$vllmPort) -ErrorAction SilentlyContinue |
+    Select-Object -ExpandProperty OwningProcess -Unique)
+}
+
+if (-not $listenerProcessIds -or $listenerProcessIds.Count -ne 1) {
+  throw "Tunnel listener PID could not be determined cleanly."
+}
+
+Set-Content -Path $pidPath -Value $listenerProcessIds[0]
+
+Write-Host "Started tunnel process PID $($listenerProcessIds[0])"
 Write-Host "Open WebUI: http://127.0.0.1:$webUiPort"
 Write-Host "vLLM: http://127.0.0.1:$vllmPort/v1/models"
-Write-Host "If prompted, enter the Spark SSH password in the new window."

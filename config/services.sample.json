@@ -3,6 +3,8 @@
     "host": "10.0.0.27",
     "sshUser": "childs",
     "sshPort": 22,
+    "sshKeyPath": "%USERPROFILE%/.ssh/id_ed25519",
+    "sshPublicKeyPath": "%USERPROFILE%/.ssh/id_ed25519.pub",
     "remoteScriptsRoot": "/opt/ai/scripts",
     "openWebUiUrl": "http://10.0.0.27:3000",
     "vllmUrl": "http://10.0.0.27:8000",

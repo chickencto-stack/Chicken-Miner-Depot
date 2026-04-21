@@ -28,6 +28,19 @@
       "problemMatcher": []
     },
     {
+      "label": "Fleet: Install SSH Key On Spark",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/surface/install-ssh-key.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
       "label": "Fleet: Start Tunnels",
       "type": "shell",
       "command": "powershell",

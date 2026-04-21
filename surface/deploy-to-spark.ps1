@@ -17,6 +17,7 @@ $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
 $SparkHost = $config.spark.host
 $SparkUser = $config.spark.sshUser
 $SparkPort = $config.spark.sshPort
+$SparkKeyPath = $config.spark.sshKeyPath
 $RemoteScriptsRoot = $config.spark.remoteScriptsRoot
 $LogsRoot = $config.spark.logsRoot
 $scripts = "$PSScriptRoot\..\spark\scripts"
@@ -24,6 +25,11 @@ $scriptFiles = Get-ChildItem -Path $scripts -Filter "*.sh" | Select-Object -Expa
 
 if (-not $scriptFiles) {
   throw "No Spark shell scripts found in $scripts"
+}
+
+$expandedKeyPath = $null
+if (-not [string]::IsNullOrWhiteSpace($SparkKeyPath)) {
+  $expandedKeyPath = [Environment]::ExpandEnvironmentVariables($SparkKeyPath)
 }
 
 function Invoke-ExternalCommand {
@@ -54,13 +60,28 @@ fi
 "@
 
 Write-Host "Creating Spark runtime directories..."
-Invoke-ExternalCommand -FilePath "ssh" -ArgumentList @("-tt", "-p", [string]$SparkPort, $target, $bootstrapCommand) -FailureMessage "Failed to create remote Spark directories."
+$sshBootstrapArgs = @("-tt", "-p", [string]$SparkPort)
+if ($expandedKeyPath) {
+  $sshBootstrapArgs += @("-i", $expandedKeyPath)
+}
+$sshBootstrapArgs += @($target, $bootstrapCommand)
+Invoke-ExternalCommand -FilePath "ssh" -ArgumentList $sshBootstrapArgs -FailureMessage "Failed to create remote Spark directories."
 
 Write-Host "Copying scripts..."
-Invoke-ExternalCommand -FilePath "scp" -ArgumentList (@("-P", [string]$SparkPort) + $scriptFiles + @("${SparkUser}@${SparkHost}:${RemoteScriptsRoot}/")) -FailureMessage "Failed to copy Spark scripts."
+$scpArgs = @("-P", [string]$SparkPort)
+if ($expandedKeyPath) {
+  $scpArgs += @("-i", $expandedKeyPath)
+}
+$scpArgs += $scriptFiles + @("${SparkUser}@${SparkHost}:${RemoteScriptsRoot}/")
+Invoke-ExternalCommand -FilePath "scp" -ArgumentList $scpArgs -FailureMessage "Failed to copy Spark scripts."
 
 Write-Host "Setting executable..."
-Invoke-ExternalCommand -FilePath "ssh" -ArgumentList @("-p", [string]$SparkPort, $target, "chmod +x ${RemoteScriptsRoot}/*.sh") -FailureMessage "Failed to set executable permissions on Spark scripts."
+$sshChmodArgs = @("-p", [string]$SparkPort)
+if ($expandedKeyPath) {
+  $sshChmodArgs += @("-i", $expandedKeyPath)
+}
+$sshChmodArgs += @($target, "chmod +x ${RemoteScriptsRoot}/*.sh")
+Invoke-ExternalCommand -FilePath "ssh" -ArgumentList $sshChmodArgs -FailureMessage "Failed to set executable permissions on Spark scripts."
 
 Write-Host "`nDone. Verify with:"
 Write-Host "  ssh -p $SparkPort $SparkUser@$SparkHost bash ${RemoteScriptsRoot}/health-check.sh"
