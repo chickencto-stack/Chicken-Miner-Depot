@@ -16,10 +16,10 @@
 ## Model provider setup
 
 1. Open Admin Settings.
-2. Open Connections.
-3. Add the OpenAI-compatible endpoint `http://127.0.0.1:18000/v1`.
-4. Verify the local model appears in the model list.
-5. Run one plain completion test.
+2. Verify the local model already appears in the model list.
+3. Run one plain completion test.
+4. Only if the model is missing, open Connections.
+5. Add the OpenAI-compatible endpoint `http://127.0.0.1:18000/v1` as a fallback check path.
 
 ## Cadet Alpha preset
 
@@ -41,3 +41,4 @@
 - Record where local Cadet is already good enough for daily work.
 - Record where you still fall back to cloud chat.
 - Keep the default Cadet preset non-RAG.
+- If the model disappears after a container restart, restart Open WebUI from the repo-managed script path before changing admin settings.

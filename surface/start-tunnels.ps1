@@ -23,6 +23,30 @@ $keyPath = $config.spark.sshKeyPath
 $webUiPort = [string]$config.surface.localOpenWebUiPort
 $vllmPort = [string]$config.surface.localVllmPort
 
+function Get-ExistingTunnelPid {
+  param(
+    [int[]]$Ports
+  )
+
+  $listenerPids = @(Get-NetTCPConnection -State Listen -LocalPort $Ports -ErrorAction SilentlyContinue |
+    Select-Object -ExpandProperty OwningProcess -Unique)
+
+  if ($listenerPids.Count -ne 1) {
+    return $null
+  }
+
+  $candidate = Get-Process -Id $listenerPids[0] -ErrorAction SilentlyContinue
+  if (-not $candidate) {
+    return $null
+  }
+
+  if ($candidate.ProcessName -ne "ssh") {
+    return $null
+  }
+
+  return $candidate.Id
+}
+
 New-Item -ItemType Directory -Force -Path $runtimeDir | Out-Null
 
 if (Test-Path $pidPath) {
@@ -35,6 +59,13 @@ if (Test-Path $pidPath) {
     }
   }
   Remove-Item -Path $pidPath -Force
+}
+
+$existingTunnelPid = Get-ExistingTunnelPid -Ports @([int]$webUiPort, [int]$vllmPort)
+if ($existingTunnelPid) {
+  Set-Content -Path $pidPath -Value $existingTunnelPid
+  Write-Host "Tunnel process already running with PID $existingTunnelPid"
+  return
 }
 
 $arguments = @(
@@ -72,8 +103,10 @@ while ((Get-Date) -lt $deadline) {
 }
 
 if (-not $listenerProcessIds) {
-  $listenerProcessIds = @(Get-NetTCPConnection -State Listen -LocalPort @([int]$webUiPort, [int]$vllmPort) -ErrorAction SilentlyContinue |
-    Select-Object -ExpandProperty OwningProcess -Unique)
+  $resolvedTunnelPid = Get-ExistingTunnelPid -Ports @([int]$webUiPort, [int]$vllmPort)
+  if ($resolvedTunnelPid) {
+    $listenerProcessIds = @($resolvedTunnelPid)
+  }
 }
 
 if (-not $listenerProcessIds -or $listenerProcessIds.Count -ne 1) {

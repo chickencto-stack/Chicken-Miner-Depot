@@ -27,7 +27,7 @@ Fleet Manager is a small control-plane repository for operating a remote NVIDIA 
 4. Run `Fleet: Start Tunnels` to open local forwards for Open WebUI and vLLM.
 5. Run `Fleet: Surface Check` to verify SSH reachability and local tunnel health.
 6. Use the VS Code tasks to check service status, restart services, and tail logs against Spark.
-7. Follow `docs/cadet-activation-checklist.md` to hook Open WebUI to the local model endpoint.
+7. Follow `docs/cadet-activation-checklist.md` to verify Open WebUI sees the local model endpoint.
 8. Paste the real prompt into `docs/cadet-alpha-prompt-template.md` and create Cadet Alpha and Cadet Alpha RAG presets.
 
 ## Workflow split
@@ -45,5 +45,7 @@ Remote operations are SSH-backed. NVIDIA Sync remains the preferred transport pa
 The current defaults target Spark at `10.0.0.27` with user `childs`, matching the existing Surface helpers in this repo.
 
 For local browser and client access on the Surface, `Fleet: Start Tunnels` forwards local ports `13000 -> 3000` and `18000 -> 8000`, and `Fleet: Stop Tunnels` tears those forwards down.
+
+The default Spark-side `start-open-webui.sh` script starts Open WebUI on `owui-net` and points it at `gemma-vllm:8000`, so the local model should appear automatically after WebUI restarts.
 
 Add the Spark public key once through `Fleet: Install SSH Key On Spark`, then the SSH-backed tasks and tunnel startup can run without interactive password entry.

@@ -12,9 +12,9 @@
 
 ## Model connection
 
-- Open Admin Settings.
-- Go to Connections first.
-- Add the local OpenAI-compatible endpoint used by your vLLM-backed model lane.
+- The repo-managed Spark startup script wires Open WebUI to `gemma-vllm:8000` on `owui-net` by default.
+- Open Admin Settings and confirm the model already appears.
+- If it does not, go to Connections and add the local OpenAI-compatible endpoint used by your vLLM-backed model lane.
 - Confirm the model appears and completes a basic chat.
 
 ## Cadet presets
