@@ -1,7 +1,28 @@
 ﻿WINDOWS_GITHUB_VALIDATION_REPORT
-Created: 20260617-150620
-Installer: ChKn_miner_installer_x64.exe
-Installer SHA256: D0607FE8B689EAD3A945E9B32EDAB7257991C269A26DA8AEC6181DA2C41C10EB
+Updated: 2026-06-17 16:39:42
+Release: Windows Chicken Miner v1.4.3 Standalone + Bots/Thermal Package
+
 Standalone ZIP: packages/windows/standalone/ChickenMiner-Windows-v1.4.3-Standalone-Installer.zip
+Standalone ZIP SHA256: 0D34EC134AF9350782B59C4BF0C9FE280676B256095630584B5E18B88A2453CF
+
 Full ZIP: packages/windows/full/ChickenMiner-Windows-v1.4.3-Bots-Thermal-Power.zip
-Forbidden content scan pass: False
+Full ZIP SHA256: 1B3A3BDD3939C16AE99BA4B1E9FBACF89C4E498B6062594FE67990776C1BDB2C
+
+Installer in full ZIP: ChKn_miner_installer_x64.exe
+Installer SHA256: D0607FE8B689EAD3A945E9B32EDAB7257991C269A26DA8AEC6181DA2C41C10EB
+
+Knowledge graph: knowledge-graphs/chicken-miner-windows-v1.4.3-bot-package.kg.json
+Knowledge graph SHA256: 866089B4703D712D462A1B25BA823B61D7A5D8F2208CEB8AA8A481A13153AFFD
+Knowledge graph embedded in full ZIP: True
+
+Agent prompt: prompts/Chicken-Miner-Windows-v1.4.3-KG-Package-Agent-Prompt.txt
+Agent prompt SHA256: C93786FB62B4F0331C7C3BB87126C7E207225462EBBE4E9CC26C41BA8340FC47
+Agent prompt embedded in full ZIP: True
+
+Public scope only: True
+Private deployment material included: False
+Private fleet-control material included: False
+Host-specific config included: False
+Secrets included: False
+Wallet or pool config included: False
+Security-weakening automation included: False

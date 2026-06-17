@@ -1,0 +1,92 @@
+﻿{
+  "graph_id": "chicken-miner.windows.v1.4.3.bot-package.knowledge-graph",
+  "graph_version": "1.0.0",
+  "created_utc": "2026-06-17T20:37:03Z",
+  "repo": "chickencto-stack/Chicken-Miner-Depot",
+  "release": "Windows Chicken Miner v1.4.3 Standalone + Bots/Thermal Package",
+  "purpose": "Bot-readable map for installing, validating, monitoring, and configuring the public Windows Chicken Miner v1.4.3 bot package.",
+  "scope": {
+    "platform": "windows",
+    "package_scope": "public bot package only",
+    "allowed_systems": "owned or explicitly administered Windows systems",
+    "private_deployment_material_included": false,
+    "private_fleet_control_included": false,
+    "host_proof_included": false,
+    "secrets_included": false,
+    "wallet_or_pool_config_included": false,
+    "security_weakening_included": false
+  },
+  "packages": [
+    {
+      "id": "package.full_bot_zip",
+      "repo_path": "packages/windows/full/ChickenMiner-Windows-v1.4.3-Bots-Thermal-Power.zip",
+      "contains_installer": true,
+      "installer_entry": "ChKn_miner_installer_x64.exe",
+      "installer_sha256": "D0607FE8B689EAD3A945E9B32EDAB7257991C269A26DA8AEC6181DA2C41C10EB",
+      "contains_knowledge_graph": true,
+      "contains_agent_prompt": true
+    },
+    {
+      "id": "package.standalone_zip",
+      "repo_path": "packages/windows/standalone/ChickenMiner-Windows-v1.4.3-Standalone-Installer.zip",
+      "contains_installer": true,
+      "contains_bot_scripts": false
+    }
+  ],
+  "required_files_inside_full_zip": [
+    "ChKn_miner_installer_x64.exe",
+    "README-WINDOWS-INSTALL.txt",
+    "knowledge-graphs/chicken-miner-windows-v1.4.3-bot-package.kg.json",
+    "prompts/Chicken-Miner-Windows-v1.4.3-KG-Package-Agent-Prompt.txt",
+    "scripts/bots/watch-chicken-miner.ps1",
+    "scripts/bots/read-chicken-status.ps1",
+    "scripts/bots/emit-chicken-health-json.ps1",
+    "scripts/thermal/chicken-windows-thermal-status.ps1",
+    "scripts/system-settings/Set-ChickenMiner-Recommended-Windows-Power.ps1",
+    "schemas/chicken-miner-health.schema.json",
+    "prompts/chicken-miner-windows-install-agent-prompt.md",
+    "checksums/SHA256SUMS.txt"
+  ],
+  "skills": [
+    {"id":"verify_checksums","output":"checksum pass/fail"},
+    {"id":"extract_package","output":"local extracted package files"},
+    {"id":"run_installer","script":"ChKn_miner_installer_x64.exe","rule":"operator approval required"},
+    {"id":"watch_process","script":"scripts/bots/watch-chicken-miner.ps1","output":"miner process status JSON"},
+    {"id":"read_status_files","script":"scripts/bots/read-chicken-status.ps1","output":"local status files when present"},
+    {"id":"emit_health_json","script":"scripts/bots/emit-chicken-health-json.ps1","output":"chicken-miner-health.json"},
+    {"id":"read_thermal_status","script":"scripts/thermal/chicken-windows-thermal-status.ps1","output":"CPU, memory, power, and thermal status"},
+    {"id":"preview_power_settings","script":"scripts/system-settings/Set-ChickenMiner-Recommended-Windows-Power.ps1","output":"dry-run recommendation"},
+    {"id":"apply_power_settings","script":"scripts/system-settings/Set-ChickenMiner-Recommended-Windows-Power.ps1 -Apply","rule":"operator approval required"}
+  ],
+  "install_sequence": [
+    "verify_checksums",
+    "extract_package",
+    "run_installer only if approved",
+    "watch_process",
+    "emit_health_json",
+    "read_status_files",
+    "read_thermal_status",
+    "preview_power_settings",
+    "apply_power_settings only if explicitly approved",
+    "report validation summary"
+  ],
+  "rules": [
+    "Operate only on owned or explicitly administered Windows systems.",
+    "Run installer and power changes only with operator approval.",
+    "Do not disable Defender, add Defender exclusions, disable UAC, modify firewall policy, enable remoting, enable file sharing, or weaken security controls.",
+    "Do not include private deployment systems, private fleet-control material, host proof, secrets, credentials, tokens, private keys, wallet config, pool config, or machine-specific private config.",
+    "Monitoring scripts report local status only and do not perform stealth, evasion, hidden persistence, or remote control."
+  ],
+  "expected_agent_report": [
+    "PACKAGE_BUILD_PASS",
+    "KNOWLEDGE_GRAPH_INCLUDED",
+    "INSTALLER_INCLUDED",
+    "SCRIPTS_INCLUDED",
+    "CHECKSUMS_INCLUDED",
+    "SAFETY_BOUNDARIES_PASS",
+    "ZIP_PATH",
+    "INSTALLER_SHA256",
+    "FULL_ZIP_SHA256",
+    "NEXT_ACTION"
+  ]
+}
