@@ -29,3 +29,11 @@ packages/windows/full/ChickenMiner-Windows-v1.4.3-Bots-Thermal-Power.zip
 - Credentials, tokens, private keys, wallet or pool configuration
 - Defender exclusion automation
 - UAC-disable logic
+
+## Bot Knowledge Graph
+
+The Windows v1.4.3 full bot package includes a bot-readable knowledge graph:
+
+knowledge-graphs/chicken-miner-windows-v1.4.3-bot-package.kg.json
+
+The full ZIP also embeds the knowledge graph and KG package agent prompt so an authorized bot can read the install sequence, package contents, monitoring skills, validation outputs, and public safety boundaries from inside the package.
