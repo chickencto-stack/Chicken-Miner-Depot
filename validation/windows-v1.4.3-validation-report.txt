@@ -1,0 +1,7 @@
+﻿WINDOWS_GITHUB_VALIDATION_REPORT
+Created: 20260617-150620
+Installer: ChKn_miner_installer_x64.exe
+Installer SHA256: D0607FE8B689EAD3A945E9B32EDAB7257991C269A26DA8AEC6181DA2C41C10EB
+Standalone ZIP: packages/windows/standalone/ChickenMiner-Windows-v1.4.3-Standalone-Installer.zip
+Full ZIP: packages/windows/full/ChickenMiner-Windows-v1.4.3-Bots-Thermal-Power.zip
+Forbidden content scan pass: False

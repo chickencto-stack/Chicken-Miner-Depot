@@ -1,10 +1,16 @@
 ﻿# Release Notes
 
-## Basic Windows and macOS standalone installers
+Windows v1.4.3 package build created 20260617-150620.
 
-Adds approved standalone installer packages for:
-- Windows
-- macOS
+Installer: ChKn_miner_installer_x64.exe
 
-No GitHub Release is created by this PR.
-No deployment is performed by this PR.
+Installer SHA256: D0607FE8B689EAD3A945E9B32EDAB7257991C269A26DA8AEC6181DA2C41C10EB
+
+Includes:
+
+- Standalone installer ZIP
+- Full installer + bots + thermal + power-settings ZIP
+- Documentation
+- Prompts
+- Manifests
+- Checksums

@@ -1,13 +1,37 @@
 ﻿# Installation
 
-Download the package for your platform from the matching package directory.
+## Standalone
 
-Windows:
-- packages/windows/chicken-miner-apex-installer-windows-standalone.zip
+Download and extract:
 
-macOS:
-- packages/macos/chicken-miner-apex-installer-macos-standalone.zip
+packages/windows/standalone/ChickenMiner-Windows-v1.4.3-Standalone-Installer.zip
 
-Verify SHA256 before use with checksums/SHA256SUMS.txt.
+Run:
 
-Do not run installers from repository automation. Installation is a manual user action.
+.\ChKn_miner_installer_x64.exe
+
+## Full package
+
+Download and extract:
+
+packages/windows/full/ChickenMiner-Windows-v1.4.3-Bots-Thermal-Power.zip
+
+Run installer:
+
+.\ChKn_miner_installer_x64.exe
+
+Run watcher:
+
+powershell -ExecutionPolicy Bypass -File .\scripts\bots\watch-chicken-miner.ps1
+
+Run thermal status:
+
+powershell -ExecutionPolicy Bypass -File .\scripts\thermal\chicken-windows-thermal-status.ps1
+
+Preview power settings:
+
+powershell -ExecutionPolicy Bypass -File .\scripts\system-settings\Set-ChickenMiner-Recommended-Windows-Power.ps1
+
+Apply power settings only if approved:
+
+powershell -ExecutionPolicy Bypass -File .\scripts\system-settings\Set-ChickenMiner-Recommended-Windows-Power.ps1 -Apply

@@ -1,12 +1,5 @@
 ﻿# Config Preservation
 
-These installers must not publish or overwrite live user configuration.
+Private operator configuration should be supplied outside this public repository.
 
-Excluded from this depot:
-- .env files
-- live config.json
-- wallet mappings
-- user mappings
-- tokens
-- private keys
-- unredacted logs
+Do not store credentials, tokens, private keys, wallet/pool configuration, or machine-specific configuration in this repo.
