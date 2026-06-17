@@ -1,2 +1,0 @@
-﻿3283c812a9724272c52d30e9b0a23a91a1870285da7c34b5e22649081868f703  packages/windows/chicken-miner-apex-installer-windows-standalone.zip
-2f6786e373e64eab7a041884cb007f137d0f153b2d1067c57f7553374ac88ca0  packages/macos/chicken-miner-apex-installer-macos-standalone.zip

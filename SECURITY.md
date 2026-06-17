@@ -1,3 +1,7 @@
 ﻿# Security
 
-This public depot must not contain private credentials, private keys, wallet mappings, user mappings, live configs, or unredacted logs.
+Use only on owned or administered systems.
+
+Do not submit credentials, tokens, private keys, wallet/pool configuration, machine-specific configuration, or private evidence.
+
+This package does not include Defender-disabling logic, UAC-disable logic, Defender exclusion automation, firewall changes, or network-sharing enablement.

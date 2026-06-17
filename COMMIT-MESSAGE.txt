@@ -1,0 +1,8 @@
+﻿Add Windows Chicken Miner v1.4.3 standalone and full bot package
+
+- Add standalone Windows Chicken Miner v1.4.3 installer ZIP
+- Add full Windows package with installer, watcher bots, thermal status tooling, and recommended power settings
+- Add Windows install documentation
+- Add package manifests and SHA256 checksums
+- Add install-agent and commit-agent prompts
+- Exclude private fleet artifacts, deployment internals, host proof, secrets, and machine-specific configuration
