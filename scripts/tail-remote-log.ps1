@@ -18,9 +18,15 @@ if (-not $serviceConfig) {
     throw "Unknown service key: $Service"
 }
 
+$tailCommand = $serviceConfig.tailCommand
+if (-not [string]::IsNullOrWhiteSpace($tailCommand)) {
+    & (Join-Path $PSScriptRoot "Invoke-SparkCommand.ps1") -ConfigPath $ConfigPath -Command $tailCommand
+    return
+}
+
 $logPath = $serviceConfig.logPath
 if ([string]::IsNullOrWhiteSpace($logPath)) {
-    throw "No logPath configured for $Service"
+    throw "No tailCommand or logPath configured for $Service"
 }
 
 $command = "tail -n $Tail -f $logPath"

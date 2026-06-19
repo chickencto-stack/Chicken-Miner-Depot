@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Cadet Friction Log</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --accent: #6c8cff;
+    --accent-dim: #3a4a8a;
+    --text: #d0d4e8;
+    --text-dim: #6b7099;
+    --red: #ff5a5a;
+    --yellow: #f0c040;
+    --green: #4fc078;
+    --radius: 8px;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif;
+    font-size: 14px; line-height: 1.5; min-height: 100vh; padding: 24px; }
+
+  h1 { font-size: 18px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+  .subtitle { color: var(--text-dim); font-size: 12px; margin-bottom: 24px; }
+
+  .card { background: var(--surface); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+
+  .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+
+  textarea {
+    width: 100%; background: var(--surface2); border: 1px solid var(--accent-dim);
+    border-radius: var(--radius); color: var(--text); padding: 10px; font-size: 14px;
+    resize: vertical; min-height: 64px; font-family: inherit;
+  }
+  textarea:focus { outline: none; border-color: var(--accent); }
+
+  select, input[type=text] {
+    background: var(--surface2); border: 1px solid var(--accent-dim);
+    border-radius: var(--radius); color: var(--text); padding: 8px 10px; font-size: 13px;
+  }
+  select:focus, input[type=text]:focus { outline: none; border-color: var(--accent); }
+
+  button {
+    padding: 8px 16px; border-radius: var(--radius); border: none;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s;
+  }
+  button:hover { opacity: .85; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-ghost { background: var(--surface2); color: var(--text-dim); border: 1px solid var(--accent-dim); }
+  .btn-danger { background: transparent; color: var(--red); border: none; font-size: 12px; padding: 2px 6px; }
+
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 600;
+    background: var(--surface2); border: 1px solid var(--accent-dim);
+    cursor: pointer; transition: background .15s, border-color .15s;
+  }
+  .tag.active { background: var(--accent-dim); border-color: var(--accent); color: #fff; }
+
+  .sev-row { display: flex; gap: 6px; }
+  .sev { padding: 3px 12px; border-radius: 99px; font-size: 11px; font-weight: 700;
+    cursor: pointer; border: 2px solid transparent; }
+  .sev.low  { background: #1a2e1c; color: var(--green); }
+  .sev.med  { background: #2e2a10; color: var(--yellow); }
+  .sev.high { background: #2e1010; color: var(--red); }
+  .sev.active { border-color: currentColor; }
+
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--text-dim); margin-bottom: 8px; }
+
+  .entries { display: flex; flex-direction: column; gap: 8px; }
+
+  .entry {
+    background: var(--surface2); border-radius: var(--radius); padding: 12px 14px;
+    border-left: 3px solid var(--accent-dim); display: grid;
+    grid-template-columns: 1fr auto; gap: 4px 8px;
+  }
+  .entry.low  { border-left-color: var(--green); }
+  .entry.med  { border-left-color: var(--yellow); }
+  .entry.high { border-left-color: var(--red); }
+
+  .entry-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    font-size: 11px; color: var(--text-dim); margin-bottom: 4px; }
+  .entry-tag { background: var(--surface); padding: 1px 8px; border-radius: 99px; }
+  .entry-sev-badge { font-weight: 700; font-size: 11px; }
+  .entry-sev-badge.low  { color: var(--green); }
+  .entry-sev-badge.med  { color: var(--yellow); }
+  .entry-sev-badge.high { color: var(--red); }
+  .entry-text { color: var(--text); font-size: 13px; white-space: pre-wrap; grid-column: 1; }
+  .entry-actions { grid-column: 2; grid-row: 1 / span 2; align-self: start; }
+
+  .day-group-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--accent); border-bottom: 1px solid var(--accent-dim);
+    padding-bottom: 4px; margin: 16px 0 8px;
+  }
+
+  .empty { color: var(--text-dim); font-style: italic; text-align: center; padding: 32px 0; }
+
+  .stats-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+  .stat { display: flex; flex-direction: column; }
+  .stat-val { font-size: 22px; font-weight: 700; color: var(--accent); font-family: var(--mono); }
+  .stat-lbl { font-size: 11px; color: var(--text-dim); }
+
+  .export-box {
+    background: var(--surface2); border: 1px solid var(--accent-dim);
+    border-radius: var(--radius); padding: 12px; font-size: 12px;
+    font-family: var(--mono); white-space: pre; overflow: auto;
+    max-height: 260px; color: var(--text-dim);
+  }
+  .hidden { display: none; }
+
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+  .filter-bar select { font-size: 12px; padding: 5px 8px; }
+  .filter-count { font-size: 11px; color: var(--text-dim); margin-left: auto; }
+</style>
+</head>
+<body>
+
+<h1>Cadet Friction Log</h1>
+<p class="subtitle">One-week rolling capture for Open WebUI adoption. Entries persist in browser storage.</p>
+
+<!-- Capture form -->
+<div class="card">
+  <div class="section-label">Log a friction point</div>
+
+  <textarea id="txt" placeholder="Describe what felt slow, confusing, or broken…"></textarea>
+
+  <div class="form-row" style="margin-top:10px">
+    <div>
+      <div class="section-label" style="margin-bottom:5px">Category</div>
+      <div class="tags" id="tagPicker">
+        <span class="tag active" data-tag="RAG">RAG</span>
+        <span class="tag" data-tag="Model">Model</span>
+        <span class="tag" data-tag="UI">UI</span>
+        <span class="tag" data-tag="Speed">Speed</span>
+        <span class="tag" data-tag="Prompt">Prompt</span>
+        <span class="tag" data-tag="KB">Knowledge</span>
+        <span class="tag" data-tag="Other">Other</span>
+      </div>
+    </div>
+
+    <div style="margin-left:auto">
+      <div class="section-label" style="margin-bottom:5px">Severity</div>
+      <div class="sev-row" id="sevPicker">
+        <span class="sev low active" data-sev="low">Low</span>
+        <span class="sev med" data-sev="med">Med</span>
+        <span class="sev high" data-sev="high">High</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row" style="margin-top:12px">
+    <button class="btn-primary" onclick="addEntry()">Add entry</button>
+    <button class="btn-ghost" onclick="toggleExport()">Export</button>
+    <button class="btn-ghost" onclick="clearWeek()">Clear week</button>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="card" id="statsCard">
+  <div class="section-label">This week</div>
+  <div class="stats-row" id="statsRow"></div>
+</div>
+
+<!-- Export panel -->
+<div class="card hidden" id="exportPanel">
+  <div class="section-label" style="margin-bottom:8px">Plain-text export</div>
+  <div class="export-box" id="exportBox"></div>
+  <button class="btn-ghost" style="margin-top:10px" onclick="copyExport()">Copy to clipboard</button>
+</div>
+
+<!-- Log -->
+<div class="card">
+  <div class="filter-bar">
+    <div class="section-label" style="margin:0">Log</div>
+    <select id="filterTag" onchange="renderLog()">
+      <option value="">All categories</option>
+      <option>RAG</option><option>Model</option><option>UI</option>
+      <option>Speed</option><option>Prompt</option><option>Knowledge</option><option>Other</option>
+    </select>
+    <select id="filterSev" onchange="renderLog()">
+      <option value="">All severities</option>
+      <option value="high">High</option>
+      <option value="med">Med</option>
+      <option value="low">Low</option>
+    </select>
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+  <div class="entries" id="log"></div>
+</div>
+
+<script>
+const STORE_KEY = 'cadet-friction-v1';
+
+let entries = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+
+let activeTag = 'RAG';
+let activeSev = 'low';
+
+// --- tag picker ---
+document.querySelectorAll('#tagPicker .tag').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('#tagPicker .tag').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    activeTag = el.dataset.tag;
+  });
+});
+
+// --- sev picker ---
+document.querySelectorAll('#sevPicker .sev').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('#sevPicker .sev').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+    activeSev = el.dataset.sev;
+  });
+});
+
+function save() {
+  localStorage.setItem(STORE_KEY, JSON.stringify(entries));
+}
+
+function addEntry() {
+  const text = document.getElementById('txt').value.trim();
+  if (!text) return;
+  entries.unshift({
+    id: Date.now(),
+    ts: new Date().toISOString(),
+    tag: activeTag,
+    sev: activeSev,
+    text
+  });
+  save();
+  document.getElementById('txt').value = '';
+  renderLog();
+  renderStats();
+}
+
+function removeEntry(id) {
+  entries = entries.filter(e => e.id !== id);
+  save();
+  renderLog();
+  renderStats();
+}
+
+function formatTs(iso) {
+  const d = new Date(iso);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function dayLabel(iso) {
+  const d = new Date(iso);
+  const today = new Date();
+  const diff = Math.round((today.setHours(0,0,0,0) - new Date(d).setHours(0,0,0,0)) / 86400000);
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Yesterday';
+  return d.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' });
+}
+
+function renderLog() {
+  const tagF = document.getElementById('filterTag').value;
+  const sevF = document.getElementById('filterSev').value;
+
+  let filtered = entries.filter(e => {
+    if (tagF && e.tag !== tagF && !(tagF === 'Knowledge' && e.tag === 'KB')) return false;
+    if (sevF && e.sev !== sevF) return false;
+    return true;
+  });
+
+  document.getElementById('filterCount').textContent = `${filtered.length} of ${entries.length}`;
+
+  const container = document.getElementById('log');
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty">No entries yet. Log your first friction point above.</div>';
+    return;
+  }
+
+  // group by day
+  const groups = {};
+  filtered.forEach(e => {
+    const label = dayLabel(e.ts);
+    if (!groups[label]) groups[label] = [];
+    groups[label].push(e);
+  });
+
+  let html = '';
+  for (const [day, items] of Object.entries(groups)) {
+    html += `<div class="day-group-label">${day}</div>`;
+    items.forEach(e => {
+      html += `
+      <div class="entry ${e.sev}">
+        <div>
+          <div class="entry-meta">
+            <span class="entry-tag">${e.tag}</span>
+            <span class="entry-sev-badge ${e.sev}">${e.sev.toUpperCase()}</span>
+            <span>${formatTs(e.ts)}</span>
+          </div>
+          <div class="entry-text">${escHtml(e.text)}</div>
+        </div>
+        <div class="entry-actions">
+          <button class="btn-danger" onclick="removeEntry(${e.id})">✕</button>
+        </div>
+      </div>`;
+    });
+  }
+  container.innerHTML = html;
+}
+
+function renderStats() {
+  const total = entries.length;
+  const high = entries.filter(e => e.sev === 'high').length;
+  const med  = entries.filter(e => e.sev === 'med').length;
+  const byTag = {};
+  entries.forEach(e => { byTag[e.tag] = (byTag[e.tag] || 0) + 1; });
+  const topTag = Object.entries(byTag).sort((a,b) => b[1]-a[1])[0];
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat"><span class="stat-val">${total}</span><span class="stat-lbl">Total entries</span></div>
+    <div class="stat"><span class="stat-val" style="color:var(--red)">${high}</span><span class="stat-lbl">High severity</span></div>
+    <div class="stat"><span class="stat-val" style="color:var(--yellow)">${med}</span><span class="stat-lbl">Med severity</span></div>
+    ${topTag ? `<div class="stat"><span class="stat-val" style="font-size:16px">${topTag[0]}</span><span class="stat-lbl">Top category (${topTag[1]})</span></div>` : ''}
+  `;
+}
+
+function toggleExport() {
+  const panel = document.getElementById('exportPanel');
+  if (panel.classList.toggle('hidden')) return;
+
+  const lines = ['CADET FRICTION LOG — EXPORT', `Generated: ${new Date().toLocaleString()}`, '='.repeat(60)];
+  const groups = {};
+  entries.forEach(e => {
+    const label = dayLabel(e.ts);
+    if (!groups[label]) groups[label] = [];
+    groups[label].push(e);
+  });
+  for (const [day, items] of Object.entries(groups)) {
+    lines.push('', `--- ${day} ---`);
+    items.forEach(e => {
+      lines.push(`[${e.sev.toUpperCase()}] [${e.tag}] ${formatTs(e.ts)}`);
+      lines.push(`  ${e.text.replace(/\n/g, '\n  ')}`);
+    });
+  }
+  document.getElementById('exportBox').textContent = lines.join('\n');
+}
+
+function copyExport() {
+  const text = document.getElementById('exportBox').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy to clipboard', 1500);
+  });
+}
+
+function clearWeek() {
+  if (!confirm('Clear all friction entries? This cannot be undone.')) return;
+  entries = [];
+  save();
+  renderLog();
+  renderStats();
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// keyboard shortcut: Ctrl+Enter to submit
+document.getElementById('txt').addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'Enter') addEntry();
+});
+
+renderLog();
+renderStats();
+</script>
+</body>
+</html>

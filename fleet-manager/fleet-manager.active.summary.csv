@@ -1,0 +1,6 @@
+﻿"target","status","next","proof"
+"Surface Pro 9","orchestrator_active","coordinate_remaining_branches","C:\ProgramData\LabDeploy\Surface-Orchestrator\proof"
+"Mac Mini 2","artifact_archived_accepted_no_install","closed_unless_install_explicitly_approved_later","C:\ProgramData\LabDeploy\Surface-Orchestrator\proof\MACMINI2_PACKAGE_ARTIFACT_ARCHIVED_ACCEPTED_20260619-160313.json"
+"Mac Mini 1","handoff_file_ready_local_login_pending","local_login_then_readonly_intake","C:\Users\jrchi\OneDrive\_Sorted_Folders\Backups-Exports\Desktop\macmini1.txt"
+"Houston EVO","dependency_hold_waiting_for_jason_site_to_site_vpn","readonly_ubuntu_intake_after_vpn",""
+"Tailscale","last","do_not_configure_until_primary_paths_exhausted_or_approved",""

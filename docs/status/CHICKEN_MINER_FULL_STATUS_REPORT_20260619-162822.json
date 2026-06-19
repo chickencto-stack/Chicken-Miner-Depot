@@ -1,0 +1,99 @@
+﻿{
+    "generated_at":  "2026-06-19 16:28:22",
+    "mode":  "CHICKEN_MINER_FULL_STATUS_REPORT",
+    "surface_orchestrator_root":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator",
+    "proof_root":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof",
+    "fleet_root":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\fleet-manager",
+    "spark_json":  "",
+    "spark_zip_proof":  "",
+    "critical_checkpoint":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof\\CRITICAL_PATH_CHECKPOINT_SPARK_BRANCH_ACCEPTED_20260619-124253.json",
+    "houston_hold_json":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof\\HOUSTON_EVO_DEPENDENCY_HOLD_20260619-124907.json",
+    "macmini2_accepted_json":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof\\MACMINI2_PACKAGE_ARTIFACT_ARCHIVED_ACCEPTED_20260619-160313.json",
+    "macmini2_import_json":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof\\MACMINI2_SURFACE_BROADER_IMPORT_CANONICAL_PATCHED_PACKAGE_EXPORT_20260619-160146.json",
+    "fleet_full_json":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof\\FLEET_MANAGER_FULL_MACMINI1_USB_MACMINI2_UPDATE_20260619-161942.json",
+    "fleet_summary_json":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\fleet-manager\\fleet-manager.active.summary.json",
+    "macmini1_row_json":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\fleet-manager\\macmini1.intake.pending.active.json",
+    "macmini2_row_json":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\fleet-manager\\macmini2.artifact.accepted.active.json",
+    "inventory_json":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\fleet-manager\\usb-macmedia-macmini2.inventory.active.json",
+    "macmini2_accepted":  true,
+    "macmini2_running":  false,
+    "macmini2_install_executed":  false,
+    "macmini2_launchd_loaded":  false,
+    "macmini2_service_started":  false,
+    "macmini2_archived_zip":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\mac-transfer\\MacMini2CanonicalPatchedPackageImport_20260619-160146\\MacMini2CanonicalPatchedPackageExport_20260619-154052.zip",
+    "macmini2_archived_zip_sha256":  "93CEDA64B878E51C3EEE11092CF7757AE6B368BE77AAF0EEF3E8C3C14AC5A77A",
+    "macmini2_inner_package_path":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\mac-transfer\\MacMini2CanonicalPatchedPackageImport_20260619-160146\\extracted\\MacMini2CanonicalPatchedPackageExport_20260619-154052\\ChknMiner-macOS-FleetMGR-Package-arm64-vendor-rebuilt-canonical-20260619-153404.zip",
+    "macmini2_inner_package_sha256":  "E0AF230565AD6BC0A213BE7ABC5BD37F0166E971A06A657AE224C06E183F702E",
+    "fleet_full_pass":  true,
+    "mac_transfer_file_count":  1897,
+    "relevant_proof_file_count":  14,
+    "flavors":  [
+                    {
+                        "flavor":  "surface-orchestrator",
+                        "target":  "Surface Pro 9",
+                        "status":  "active_controller",
+                        "proof":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof",
+                        "next":  "continue orchestration and final closeout"
+                    },
+                    {
+                        "flavor":  "spark-openwebui-vllm-cadet-rag",
+                        "target":  "Spark / local AI stack",
+                        "status":  "accepted_frozen",
+                        "proof":  "",
+                        "next":  "github_release_tag_verify_or_create"
+                    },
+                    {
+                        "flavor":  "macos-fleetmgr-arm64-package",
+                        "target":  "Mac Mini 2",
+                        "status":  "artifact_archived_accepted_no_install",
+                        "proof":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof\\MACMINI2_PACKAGE_ARTIFACT_ARCHIVED_ACCEPTED_20260619-160313.json",
+                        "next":  "local_install_run_preflight_then_explicit_start_gate"
+                    },
+                    {
+                        "flavor":  "macmini2-operational-runtime",
+                        "target":  "Mac Mini 2",
+                        "status":  "not_running_yet",
+                        "proof":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof\\MACMINI2_PACKAGE_ARTIFACT_ARCHIVED_ACCEPTED_20260619-160313.json",
+                        "next":  "run_macmini2_install_run_preflight_from_local_terminal"
+                    },
+                    {
+                        "flavor":  "macmini1-rollout",
+                        "target":  "Mac Mini 1",
+                        "status":  "handoff_ready_local_login_pending",
+                        "proof":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\fleet-manager\\macmini1.intake.pending.active.json",
+                        "next":  "local_login_then_readonly_intake"
+                    },
+                    {
+                        "flavor":  "windows-usb-media",
+                        "target":  "Windows USB media",
+                        "status":  "pending_run",
+                        "proof":  "",
+                        "next":  "run_usb_media_on_windows_then_capture_proof"
+                    },
+                    {
+                        "flavor":  "houston-evo-ubuntu-render",
+                        "target":  "Houston EVO",
+                        "status":  "dependency_hold_waiting_for_jason_site_to_site_vpn",
+                        "proof":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof\\HOUSTON_EVO_DEPENDENCY_HOLD_20260619-124907.json",
+                        "next":  "readonly_ubuntu_intake_after_vpn"
+                    },
+                    {
+                        "flavor":  "tailscale",
+                        "target":  "Fleet network fallback",
+                        "status":  "last",
+                        "proof":  "",
+                        "next":  "do_not_configure_until_primary_paths_exhausted_or_approved"
+                    }
+                ],
+    "install_executed":  false,
+    "installer_executed":  false,
+    "candidate_executed":  false,
+    "remote_restart_attempted":  false,
+    "remote_install_attempted":  false,
+    "remote_login_modified":  false,
+    "file_sharing_modified":  false,
+    "firewall_modified":  false,
+    "tailscale_configured":  false,
+    "security_boundaries_preserved":  true,
+    "next":  "MACMINI2_LOCAL_INSTALL_RUN_PREFLIGHT_THEN_MACMINI1_ROLLOUT_AND_WINDOWS_USB"
+}

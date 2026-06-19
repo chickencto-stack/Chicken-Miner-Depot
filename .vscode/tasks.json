@@ -54,6 +54,19 @@
       "problemMatcher": []
     },
     {
+      "label": "Fleet: Daily Bring-up",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/surface/daily-bringup.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
       "label": "Fleet: Stop Tunnels",
       "type": "shell",
       "command": "powershell",
@@ -76,6 +89,19 @@
         "Bypass",
         "-File",
         "${workspaceFolder}/scripts/health-check.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Fleet: Preflight",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/preflight.ps1"
       ],
       "problemMatcher": []
     },

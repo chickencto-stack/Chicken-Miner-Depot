@@ -49,18 +49,10 @@ function Invoke-ExternalCommand {
 }
 
 $target = "$SparkUser@$SparkHost"
-$bootstrapCommand = @"
-set -e
-if [ -d /opt/ai ] && [ -w /opt/ai ]; then
-  mkdir -p '$RemoteScriptsRoot' '$LogsRoot' /opt/ai/run
-else
-  sudo mkdir -p '$RemoteScriptsRoot' '$LogsRoot' /opt/ai/run
-  sudo chown -R '$SparkUser:$SparkUser' /opt/ai
-fi
-"@
+$bootstrapCommand = "if [ -d /opt/ai ] && [ -w /opt/ai ]; then mkdir -p '$RemoteScriptsRoot' '$LogsRoot' /opt/ai/run; else sudo mkdir -p '$RemoteScriptsRoot' '$LogsRoot' /opt/ai/run; sudo chown -R '${SparkUser}:${SparkUser}' /opt/ai; fi"
 
 Write-Host "Creating Spark runtime directories..."
-$sshBootstrapArgs = @("-tt", "-p", [string]$SparkPort)
+$sshBootstrapArgs = @("-p", [string]$SparkPort)
 if ($expandedKeyPath) {
   $sshBootstrapArgs += @("-i", $expandedKeyPath)
 }

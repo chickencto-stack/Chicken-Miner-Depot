@@ -28,6 +28,7 @@
     },
     "vllm": {
       "label": "vLLM",
+      "defaultModelId": "/models/26b",
       "healthUrl": "http://10.0.0.27:8000/v1/models",
       "tunneledHealthUrl": "http://127.0.0.1:18000/v1/models",
       "startCommand": "bash /opt/ai/scripts/start-vllm.sh",

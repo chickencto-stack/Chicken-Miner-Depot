@@ -35,8 +35,10 @@
 - Run 5 normal chats through Cadet Alpha.
 - Run 2 document-grounded tests through Cadet Alpha RAG.
 - Note where it feels weaker or better than cloud chat.
+- During the first week, capture friction immediately in `docs/friction-log.html` and review the weekly export before making workflow changes.
 
 ## Supporting files in this repo
 
 - `docs/cadet-activation-checklist.md` for the full operator checklist.
 - `docs/cadet-alpha-prompt-template.md` for storing the real Cadet Alpha prompt text.
+- `docs/friction-log.html` for one-week rolling friction capture and export.

@@ -24,8 +24,8 @@ Fleet Manager is a small control-plane repository for operating a remote NVIDIA 
 1. Review `config/services.local.json` and adjust host, user, ports, or paths if Spark changed.
 2. Run `Fleet: Install SSH Key On Spark` once so SSH and tunnels can run without password prompts.
 3. Run `Fleet: Deploy Spark Scripts` to push `spark/scripts/*.sh` onto Spark.
-4. Run `Fleet: Start Tunnels` to open local forwards for Open WebUI and vLLM.
-5. Run `Fleet: Surface Check` to verify SSH reachability and local tunnel health.
+4. Run `Fleet: Daily Bring-up` to start tunnels and validate SSH reachability, service health, and default model visibility.
+5. Run `Fleet: Surface Check` if you need the separate tunnel-focused check.
 6. Use the VS Code tasks to check service status, restart services, and tail logs against Spark.
 7. Follow `docs/cadet-activation-checklist.md` to verify Open WebUI sees the local model endpoint.
 8. Paste the real prompt into `docs/cadet-alpha-prompt-template.md` and create Cadet Alpha and Cadet Alpha RAG presets.
@@ -48,4 +48,8 @@ For local browser and client access on the Surface, `Fleet: Start Tunnels` forwa
 
 The default Spark-side `start-open-webui.sh` script starts Open WebUI on `owui-net` and points it at `gemma-vllm:8000`, so the local model should appear automatically after WebUI restarts.
 
+`Fleet: Preflight` uses `services.vllm.defaultModelId` in `config/services.local.json` to enforce a stable daily model lane.
+
 Add the Spark public key once through `Fleet: Install SSH Key On Spark`, then the SSH-backed tasks and tunnel startup can run without interactive password entry.
+
+For the first week of Open WebUI adoption, open `docs/friction-log.html` in a local browser and capture each rough edge as it happens. Keep entries short and tag them by area so repeated pain points are easy to spot.

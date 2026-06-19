@@ -1,0 +1,32 @@
+﻿[
+    {
+        "target":  "Surface Pro 9",
+        "status":  "orchestrator_active",
+        "next":  "coordinate_remaining_branches",
+        "proof":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof"
+    },
+    {
+        "target":  "Mac Mini 2",
+        "status":  "artifact_archived_accepted_no_install",
+        "next":  "closed_unless_install_explicitly_approved_later",
+        "proof":  "C:\\ProgramData\\LabDeploy\\Surface-Orchestrator\\proof\\MACMINI2_PACKAGE_ARTIFACT_ARCHIVED_ACCEPTED_20260619-160313.json"
+    },
+    {
+        "target":  "Mac Mini 1",
+        "status":  "handoff_file_ready_local_login_pending",
+        "next":  "local_login_then_readonly_intake",
+        "proof":  "C:\\Users\\jrchi\\OneDrive\\_Sorted_Folders\\Backups-Exports\\Desktop\\macmini1.txt"
+    },
+    {
+        "target":  "Houston EVO",
+        "status":  "dependency_hold_waiting_for_jason_site_to_site_vpn",
+        "next":  "readonly_ubuntu_intake_after_vpn",
+        "proof":  ""
+    },
+    {
+        "target":  "Tailscale",
+        "status":  "last",
+        "next":  "do_not_configure_until_primary_paths_exhausted_or_approved",
+        "proof":  ""
+    }
+]
